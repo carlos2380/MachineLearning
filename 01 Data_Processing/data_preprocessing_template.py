@@ -9,3 +9,9 @@ import pandas as pd
 dataset = pd.read_csv('Data.csv')
 x = dataset.iloc[:, :-1].values
 y = dataset.iloc[:, 3].values
+
+#Taking care of missing data, take info of Imputer with ctrl+I in anaconda
+from sklearn.preprocessing import Imputer
+imputer = Imputer(missing_values = 'NaN', strategy = 'mean',axis = 0)
+imputer = imputer.fit(x[:,1:3])
+x[:,1:3] = imputer.transform(x[:,1:3])
