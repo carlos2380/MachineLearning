@@ -1,0 +1,64 @@
+# Multiplea Linear Regression
+
+# Data Preprocessing Template
+
+# Importing the libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+#Importing the dataset
+dataset = pd.read_csv('Divisas.csv')
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, 10].values
+
+
+#Splitting dataset into Training set and Test set
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 0) 
+
+
+#Fitting Multiple Linear Regression to the Training set
+from sklearn.linear_model import LinearRegression
+regressor = LinearRegression()
+regressor.fit(X_train, y_train)
+
+
+#Predicting the Test set result
+y_pred = regressor.predict(X_test)
+
+
+#Building the optimal model using Backward Elimination
+X = np.append(arr = np.ones((283, 1)).astype(int), values = X, axis = 1)
+import statsmodels.formula.api as sm
+def backwardElimination(x, sl):
+    numVars = len(x[0])
+    for i in range(0, numVars):
+        regressor_OLS = sm.OLS(y, x).fit()
+        maxVar = max(regressor_OLS.pvalues).astype(float)
+        if maxVar > sl:
+            for j in range(0, numVars - i):
+                if (regressor_OLS.pvalues[j].astype(float) == maxVar):
+                    x = np.delete(x, j, 1)
+    regressor_OLS.summary()
+    return x
+ 
+SL = 0.05
+X_opt = X[:, [0, 1, 2, 3, 4, 5,6,7,8,9,10]]
+X_Modeled = backwardElimination(X_opt, SL)
+
+X_Modeled = X_Modeled[:, 1:]
+
+
+from sklearn.model_selection import train_test_split
+X_ModeledX_train, X_ModeledX_test, X_Modeledy_train, X_Modeledy_test = train_test_split(X_Modeled, y, test_size = 0.2, random_state = 0) 
+
+
+#Fitting Multiple Linear Regression to the Training set
+from sklearn.linear_model import LinearRegression
+X_Modeledregressor = LinearRegression()
+X_Modeledregressor.fit(X_ModeledX_train, X_Modeledy_train)
+
+
+#Predicting the Test set result
+X_Modeledy_pred = X_Modeledregressor.predict(X_ModeledX_test)
