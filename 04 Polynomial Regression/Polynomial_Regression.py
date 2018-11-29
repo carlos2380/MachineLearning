@@ -19,3 +19,31 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, rando
 sc_X = StandardScaler()
 X_train = sc_X.fit_transform(X_train)
 X_test = sc_X.transform(X_test) """
+
+#Fitting Linear Regression to the fataset
+from sklearn.linear_model import LinearRegression
+linearRegressor = LinearRegression()
+linearRegressor.fit(X, y)
+
+#Fitting Polynomial Regression to the dataset
+from sklearn.preprocessing import PolynomialFeatures
+polyRegressor = PolynomialFeatures(degree = 3) #Degree can be between 2 to N
+X_poly = polyRegressor.fit_transform(X);
+lin_reg = LinearRegression()
+lin_reg.fit(X_poly, y);
+
+#Visualising the Polynomial Regresion result
+plt.scatter(X, y, color = 'red')
+plt.plot(X, lin_reg.predict(polyRegressor.fit_transform(X)), color = 'blue')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show
+
+#Visualising the Polynomial Regresion result all degrees
+X_grid = np.arange(min(X), max(X), 0.1)
+X_grid = X_grid.reshape((len(X_grid), 1))
+plt.scatter(X, y, color = 'red')
+plt.plot(X_grid, lin_reg.predict(polyRegressor.fit_transform(X_grid)), color = 'blue')
+plt.xlabel('Position level')
+plt.ylabel('Salary')
+plt.show
