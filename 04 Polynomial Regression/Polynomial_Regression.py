@@ -27,8 +27,9 @@ linearRegressor.fit(X, y)
 
 #Fitting Polynomial Regression to the dataset
 from sklearn.preprocessing import PolynomialFeatures
-polyRegressor = PolynomialFeatures(degree = 3) #Degree can be between 2 to N
+polyRegressor = PolynomialFeatures(degree = 4) #Degree can be between 2 to N
 X_poly = polyRegressor.fit_transform(X);
+polyRegressor.fit(X_poly, y)
 lin_reg = LinearRegression()
 lin_reg.fit(X_poly, y);
 
@@ -47,3 +48,7 @@ plt.plot(X_grid, lin_reg.predict(polyRegressor.fit_transform(X_grid)), color = '
 plt.xlabel('Position level')
 plt.ylabel('Salary')
 plt.show
+
+#Predict a new result with Polynomial Regression
+toPred = [[6.5]]
+lin_reg.predict(polyRegressor.fit_transform(toPred))
